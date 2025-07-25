@@ -1,6 +1,7 @@
 # Automation-Install-snort-ubuntu24.04lts
 # Snort IDS Installer Otomatis untuk Ubuntu 24.04
 
+
 CARA MENGGUNAKAN:
 Buat 3 file script:
 
