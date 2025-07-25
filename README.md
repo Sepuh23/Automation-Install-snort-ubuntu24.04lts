@@ -1,105 +1,42 @@
 # Automation-Install-snort-ubuntu24.04lts
 # Snort IDS Installer Otomatis untuk Ubuntu 24.04
 
-![Snort Logo](https://www.snort.org/assets/images/snort_logo.png)
+CARA MENGGUNAKAN:
+Buat 3 file script:
 
-## 📋 Panduan 3 Langkah Lengkap
-
-### 1. INSTALASI SNORT
-**File:** `install_snort.sh`
-
-**Langkah-langkah:**
-1. Buka terminal
-2. Clone repository:
-   ```bash
-   git clone https://github.com/username/snort-ubuntu-autoinstall.git
-   cd snort-ubuntu-autoinstall
+bash
+nano install_snort.sh    # Salin isi TAHAP 1
+nano config_rules.sh    # Salin isi TAHAP 2
+nano monitor_log.sh     # Salin isi TAHAP 3
 Berikan hak akses:
 
 bash
-chmod +x install_snort.sh
-Jalankan instalasi:
+chmod +x install_snort.sh config_rules.sh monitor_log.sh
+Jalankan berurutan:
 
 bash
 sudo ./install_snort.sh
-Yang dilakukan script:
-
-Mengupdate paket Ubuntu
-
-Menginstall Snort dan semua dependensi
-
-Mengatur jaringan lokal ke 10.5.50.0/24
-
-Membuat folder log di /var/log/snort
-
-2. KONFIGURASI RULES
-File: config_rules.sh
-
-Langkah-langkah:
-
-Pastikan sudah berada di folder project
-
-Berikan hak akses:
-
-bash
-chmod +x config_rules.sh
-Jalankan konfigurasi:
-
-bash
 sudo ./config_rules.sh
-Rules yang ditambahkan:
-
-🚨 Deteksi ICMP Flood (serangan ping)
-
-🔍 Alarm Port Scanning
-
-🔒 Peringatan Bruteforce SSH
-
-⚠️ Deteksi traffic mencurigakan
-
-3. MONITORING LOG
-File: monitor_log.sh
-
-Langkah-langkah:
-
-Pastikan sudah berada di folder project
-
-Berikan hak akses:
-
-bash
-chmod +x monitor_log.sh
-Jalankan monitoring:
-
-bash
 ./monitor_log.sh
-Fitur monitoring:
+HASIL YANG DIHARAPKAN:
+Log ICMP Flood saat ada ping ke server:
 
-🔄 Update real-time setiap 1 detik
-
-📜 Menampilkan 5 alert terbaru
-
-📊 Statistik traffic jaringan
-
-⏹️ Tekan Ctrl+C untuk berhenti
-
-🖥️ Contoh Output
 text
-[=== ALERT TERAKHIR ===]
-[**] [1:1001:0] ICMP Flood Terdeteksi [**]
-07/28-14:25:03 10.5.50.15 -> 10.5.50.5
+[**] [1:1001:0] ICMP Flood [**]
+07/26-14:30:45 10.5.50.10 -> 10.5.50.5
+Alert Port Scan saat deteksi scanning:
 
-[=== STATISTIK TRAFIK ===]
-Total paket dianalisis: 1,243
-Alert yang terdeteksi: 12
-⁉️ Troubleshooting
-Jika ada masalah:
+text
+[**] [1:1002:0] Port Scan [**]
+07/26-14:32:10 10.5.50.15 -> 10.5.50.5:22
+Deteksi Bruteforce SSH:
 
-bash
-# Cek status Snort
-sudo systemctl status snort
+text
+[**] [1:1003:0] SSH Bruteforce [**]
+07/26-14:33:22 10.5.50.20 -> 10.5.50.5:22
+CATATAN PENTING:
+Pastikan interface enp0s3 aktif (ip a show enp0s3)
 
-# Tes konfigurasi
-sudo snort -T -c /etc/snort/snort.conf -i enp0s3
+Untuk jaringan berbeda, ganti semua 10.5.50.0/24 dengan subnet Anda
 
-# Lihat error log
-tail -f /var/log/syslog | grep snort
+Rules bisa ditambah/edit di /etc/snort/rules/local.rules
